@@ -1,0 +1,82 @@
+{% extends 'ehealth/base.html' %}
+{% block title %}{{ patient }}{% endblock %}
+{% block albums_active %}active{% endblock %}
+
+{% block body %}
+<div class="container-fluid songs-container">
+
+    <div class="row">
+
+        <!-- Left Patient Info -->
+        <div class="col-sm-4 col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <a href="{% url 'ehealth:detail' patient.id %}">
+                        {% if patient.pat_img %}
+                            <img src="{{ patient.pat_img.url }}" class="img-responsive">
+                        {% else %}
+                            <h3>No image to display</h3>
+                        {% endif %}
+                    </a>
+                    <h1>{{ patient.pat_name }} <small>{{ patient.bloodtype }}</small></h1>
+                    <h2>{{ patient.clinician }}</h2>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Song Info -->
+        <div class="col-sm-8 col-md-9">
+
+            <ul class="nav nav-pills" style="margin-bottom: 10px;">
+                <li role="presentation" class="active"><a href="{% url 'ehealth:detail' patient.id %}">View All</a></li>
+                <li role="presentation"><a href="{% url 'ehealth:create_medrecord' patient.id %}">Add New MedRecord</a></li>
+            </ul>
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+
+                    <h3>All MedRecords</h3>
+
+                    {% if error_message %}
+                        <p><strong>{{ error_message }}</strong></p>
+                    {% endif %}
+
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Complaint</th>
+                            <th>Gender</th>
+                            <th>Medications</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for medrecord in patient.medrecord_set.all %}
+                            <tr>
+                                <td>{{ medrecord.chief_complaint }}</td>
+                                <td>{{ medrecord.gender }}</td>
+                                <td>{{ medrecord.medications }}</td>
+                                <td>
+                                    <form action="{% url 'ehealth:delete_medrecord' patient.id medrecord.id %}" method="post" style="display: inline;">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="medrecord_id" value="{{ medrecord.id }}" />
+                                        <button type="submit" class="btn btn-danger btn-xs">
+                                            <span class="glyphicon glyphicon-remove"></span>&nbsp; Delete
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

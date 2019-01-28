@@ -1,0 +1,59 @@
+{% extends 'ehealth/base.html' %}
+{% block title %}All MedRecords{% endblock %}
+{% block songs_active %}active{% endblock %}
+
+{% block body %}
+<div class="container-fluid songs-container">
+
+    <div class="row">
+        <div class="col-sm-12">
+            <ul class="nav nav-pills" style="margin-bottom: 10px;">
+                <li role="presentation" {% if filter_by == 'all' %}class="active"{% endif %}><a href="{% url 'ehealth:medrecords' 'all' %}">View All</a></li>
+                
+            </ul>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-sm-12">
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Complaint</th>
+                                <th>Clinician</th>
+                                <th>Gender</th>
+                                <th>Medications</th>
+                                <th>Patient</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for medrecord in medrecord_list %}
+                                <tr>
+                                    <td>{{ medrecord.chief_complaint }}</td>
+                                    <td>{{ medrecord.patient.clinician }}</td>
+                                    <td>{{ medrecord.gender }}</td>
+                                    <td>{{ medrecord.medications }}</td>
+                                    <td>
+                                        <a href="{% url 'ehealth:detail' medrecord.patient.id %}">
+                                            <img src="{{ medrecord.patient.pat_img.url }}" class="img-responsive" style="width: 20px; float: left; margin-right: 10px;" />
+                                        </a>
+                                        <a href="{% url 'ehealth:detail' medrecord.patient.id %}">{{ medrecord.patient.pat_name }}</a>
+                                    </td>
+
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}
