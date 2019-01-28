@@ -6,3 +6,6 @@ This app allow the following functions:
 3. A page that displays the statistical details of the medical records gotten from the users. e.g A chart that shows the count for users with Ebola.
 4. A table that displays all users and their relevant medical records.
 5. A drop down filter to show users with specified medical records of your own discretion e.g show only users with malaria.
+
+
+The web app is designed in Django version 1.9.1, Bootstrap, Javascript.
